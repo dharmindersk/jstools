@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<!-- saved from url=(0066)https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_textarea -->
+<html lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+  <style data-merge-styles="true"></style>
+<style data-merge-styles="true"></style><style data-merge-styles="true"></style><title></title>
+<meta name="viewport" content="width=device-width">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+  * {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+  body {
+    color:#000000;
+    margin:0px;
+    font-size:100%;
+  }
+  .trytopnav {
+    height:55px;
+    overflow:hidden;
+    min-width:380px;
+    position:absolute;
+    width:100%;
+    padding-left: 8px;
+    background-color:#E7E9EB;
+  }
+  .w3-bar {
+    position:absolute;
+    top:6px;
+  }
+
+  .trytopnav a,.trytopnav button {
+    color:#999999;
+  }
+  .w3-bar .w3-bar-item:hover {
+    color:#757575 !important;
+  }
+  
+  #iframecontainer {
+    font-family: consolas,Menlo,"courier new",monospace;
+    font-size: 12px;
+  }
+  #container {
+    background-color:#E7E9EB;
+    width:100%;
+    overflow:auto;
+    position:absolute;
+    top:55px;
+  
+    bottom:0;
+    height:auto;
+  }
+  #textareacontainer, #iframecontainer {
+    float:left;
+    height:100%;
+    width:50%;
+  }
+  
+  #textarea, #textarea2, #iframe {
+    height:100%;
+    width:100%;
+    padding-bottom:10px;
+    padding-top:1px;
+  }
+  #textarea {
+    padding-left:10px;
+    padding-right:5px;  
+  }
+  #iframe {
+    padding-left:5px;
+    padding-right:10px;  
+    position:relative;  
+    
+  }
+  #textareawrapper {
+    width:100%;
+    height:100%;
+    overflow:auto;
+    background-color: #ffffff;
+    position:relative;
+    box-shadow:0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  }
+  #iframewrapper {
+    width:100%;
+    height:100%;
+    -webkit-overflow-scrolling: touch;
+    background-color: #ffffff;
+    padding: 8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    display: inline-block;
+  }
+
+  #output{
+    display: inline-block;
+    word-wrap: break-word;
+    table-layout: fixed;    
+  }
+
+  table {
+    border-collapse: collapse;
+  }
+  table,th,td {
+    border: 1px solid #ddd;
+    border-collapse: collapse;
+    padding:5px;
+  }
+
+  td {
+    display: table-cell;
+    vertical-align: inherit;
+  }
+  #textareaCode {
+    background-color: #ffffff;
+    font-family: consolas,Menlo,"courier new",monospace;
+    height:100%;
+    width:100%;
+    padding:8px;
+    resize: none;
+    border:none;
+    line-height:normal;    
+  }
+
+  #textareacontainer.horizontal,#iframecontainer.horizontal{
+    height:50%;
+    float:none;
+    width:100%;
+  }
+  
+  
+  #textarea.horizontal{
+    height:100%;
+    padding-left:10px;
+    padding-right:10px;
+  }
+  #iframe.horizontal{
+    height:100%;
+    padding-right:10px;
+    padding-bottom:10px;
+    padding-left:10px;  
+  }
+  #container.horizontal{
+    min-height:200px;
+    margin-left:0;
+  }
+  
+  #runbtn, #copybtn, #tabbtn {
+    background-color:#04AA6D;
+    color:white;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size:18px;
+    padding:6px 25px;
+    margin-top:4px;
+    border-radius:5px;
+    word-spacing:10px;
+  }
+  #runbtn:hover, #copybtn:hover, #tabbtn:hover {
+    background-color: #059862 !important;
+    color:white!important;
+    cursor:pointer;
+  }
+
+  </style>
+  
+<script>
+
+function prettyPrint() {
+    var ugly = document.getElementById('textareaCode').value;
+    var results = document.getElementById("results");
+    try {
+    var obj = JSON.parse(ugly);
+    var pretty = JSON.stringify(obj, undefined, 4);
+    document.getElementById('textareaCode').value = pretty;
+  } catch (e) {
+  results.innerHTML = e;
+  }
+}
+
+function parseInput() {
+      var results = document.getElementById("results");
+      var tbody = document.getElementById('tbody');
+      var data="";
+      tbody.innerHTML="";
+      results.innerHTML = "";
+
+      var information = document.getElementById("textareaCode").value;             // 
+      try {
+         data = JSON.parse(information); 
+      } catch (e) {
+        results.innerHTML = e;
+      }
+
+    for (var key in data) {
+        display(key,data[key]);
+    }
+  }
+    
+function addRow(field,value){
+  var tbody = document.getElementById('tbody');
+  tbody.innerHTML=tbody.innerHTML+'<tr><td>'+field+'</td><td>'+value+'</td></tr>';
+}
+
+function display(path,data){
+  if (typeof data === 'string') //simple key value pair in main object
+  {
+    addRow(path,data);
+  }
+  else {
+    for (var key in data) {
+        if (typeof data[key] === 'object') // complex object or Array //nested
+        {
+          display(path+'/'+key,data[key]);				
+        }
+       else  if (typeof data[key] === 'string' || typeof data[key] === 'number') //simple key value pair in array
+        {
+          addRow(path+'/'+key,data[key]);
+        }
+      }
+    }
+}
+
+function copyTable() {
+    var tableO = document.getElementById("output"); 
+    
+    if (navigator.clipboard) {
+        var text = tableO.innerText.trim();
+        navigator.clipboard.writeText(text).catch(function () { });
+    }
+}
+
+    
+</script>
+
+<body>
+<div class="trytopnav">
+  <div class="w3-bar">  
+    <button id="runbtn" class="w3-button w3-bar-item w3-hover-white w3-hover-text-green ga-tryit" onclick="prettyPrint()">Prettify &#10095;</button>
+    <button id="tabbtn" class="w3-button w3-bar-item w3-hover-white w3-hover-text-green ga-tryit" onclick="parseInput()">Tabulate &#10095;</button>
+    <button id="copybtn" class="w3-button w3-bar-item w3-hover-white w3-hover-text-green ga-tryit" onclick="copyTable()">Copy Table &#10095;</button>
+  </div>
+</div>
+
+
+<div id="container">
+
+  <div id="menuOverlay" class="w3-overlay w3-transparent" style="cursor:pointer;z-index:4"></div>
+  <div id="textareacontainer">
+    <div id="textarea">
+      <div id="textareawrapper">
+        
+            <textarea autocomplete="off" id="textareaCode" wrap="logical" spellcheck="false" >
+</textarea>      
+       </div>
+    </div>
+  </div>
+  <div id="iframecontainer">
+    <div id="iframe">
+      <div id="iframewrapper">
+        <div id="results"></div>
+        <table id="output">
+          <thead>
+               <tr>
+                    <th>Field</th>
+                    <th>Value</th>
+                </tr>
+          </thead>
+          <tbody id="tbody">
+          </tbody>
+      </table>
+        </div>
+    </div>
+  </div>
+</div>
+</html>
