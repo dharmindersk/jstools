@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!-- saved from url=(0066)https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_textarea -->
 <html lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
   <style data-merge-styles="true"></style>
 <style data-merge-styles="true"></style><style data-merge-styles="true"></style><title></title>
@@ -110,6 +109,7 @@
   td {
     display: table-cell;
     vertical-align: inherit;
+    /*max-width:350px;*/
   }
   #textareaCode {
     background-color: #ffffff;
@@ -168,6 +168,7 @@
 function prettyPrint() {
     var ugly = document.getElementById('textareaCode').value;
     var results = document.getElementById("results");
+      results.innerHTML = "";
     try {
     var obj = JSON.parse(ugly);
     var pretty = JSON.stringify(obj, undefined, 4);
@@ -179,10 +180,12 @@ function prettyPrint() {
 
 function parseInput() {
       var results = document.getElementById("results");
+      results.innerHTML = "";
       var tbody = document.getElementById('tbody');
       var data="";
       tbody.innerHTML="";
-      results.innerHTML = "";
+      rowcount=0 ;
+      
 
       var information = document.getElementById("textareaCode").value;             // 
       try {
@@ -191,34 +194,36 @@ function parseInput() {
         results.innerHTML = e;
       }
 
-    for (var key in data) {
-        display(key,data[key]);
-    }
+  for (var key in data) {
+      display(key,data[key]);
   }
-    
+}
+var rowcount=0  ;  
 function addRow(field,value){
+  rowcount++;
   var tbody = document.getElementById('tbody');
-  tbody.innerHTML=tbody.innerHTML+'<tr><td>'+field+'</td><td>'+value+'</td></tr>';
+  tbody.innerHTML=tbody.innerHTML+'<tr><td>'+rowcount+'</td><td>'+field+'</td><td>'+value+'</td></tr>';
+
 }
 
 function display(path,data){
-  if (typeof data === 'string') //simple key value pair in main object
-  {
-    addRow(path,data);
+  if (typeof data != 'object' || Array.isArray(data) && data.length==0) {
+    addRow(path,data);  //simple key value pair or empty array
   }
   else {
     for (var key in data) {
-        if (typeof data[key] === 'object') // complex object or Array //nested
-        {
-          display(path+'/'+key,data[key]);				
-        }
-       else  if (typeof data[key] === 'string' || typeof data[key] === 'number') //simple key value pair in array
-        {
-          addRow(path+'/'+key,data[key]);
-        }
+      if (typeof data[key] === 'object' ) // complex object or Array //nested
+      {
+        display(path+'/'+key,data[key]);				
+      }
+      else  
+      {
+        addRow(path+'/'+key,data[key]);
       }
     }
+  }
 }
+
 
 function copyTable() {
     var tableO = document.getElementById("output"); 
@@ -261,6 +266,7 @@ function copyTable() {
         <table id="output">
           <thead>
                <tr>
+                <th>#</th>
                     <th>Field</th>
                     <th>Value</th>
                 </tr>
